@@ -48,24 +48,30 @@ void loop(){
   red_ptr = &red_val;
   ir_ptr = &ir_val;
   uint32_t total = 0;
-  for(int i=0;i<5;){
+  for(int i=0;i<10;){
     maxim_max30102_read_fifo(red_ptr, ir_ptr);
-    //Serial.println(*ir_ptr);
+    Serial.println(*ir_ptr);
+//    SerialBT.println(*ir_ptr);
     if (*ir_ptr>7000){
       Serial.print(total);
       Serial.print(" ");
       Serial.println(*ir_ptr);
       total += *ir_ptr; 
       i++;
-      SerialBT.println(*ir_ptr);
     }
-    delay(200);
+    delay(500);
   }
-  if(total/5<130000){
+  Serial.print("Average: ");
+  Serial.println(total/10);
+  SerialBT.print(total/10);
+  if(total/10<8000){ //TODO Configure
     Serial.println("buzz");
-    digitalWrite(HIGH, buzz);
+//    SerialBT.println("buzz");
+    digitalWrite(buzz, HIGH);
   }else{
-    digitalWrite(LOW, buzz);
+    Serial.println("stop buzzing");
+//    SerialBT.println("stop buzzing");
+    digitalWrite(buzz, LOW);
   }
 }
 
